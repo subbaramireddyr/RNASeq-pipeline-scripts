@@ -6,9 +6,13 @@ This pipeline used to process and analyze RNA-seq data, including quality contro
 
 ### 1. fastQC.sh
 Purpose: Perform quality control checks on raw FASTQ files.
+
 Command: `fastqc data/rawreads/*.fastq -o fastqc/`
+
 Input: Raw FASTQ files located in `data/rawreads/`.
+
 Output: HTML and summary QC reports for each FASTQ file in the `fastqc/` directory.
+
 Log: Results are written to `results/logs/fastqc.log` and errors to `results/logs/fastqc.err`.
 
 ### 2. trimAll.sh
