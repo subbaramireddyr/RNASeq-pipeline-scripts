@@ -13,8 +13,7 @@ echo "Starting our analysis $(date)"
 echo "Loading our BINF6308 Anaconda environment."
 module load anaconda3/2021.11
 source activate BINF-12-2021
-echo "Loading GSNAP and Samtools."
-module load gsnap/2021-12-17
+echo "Samtools."
 module load samtools/1.10
 
 echo "Make directory for log files"
