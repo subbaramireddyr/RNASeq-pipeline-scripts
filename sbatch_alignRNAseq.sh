@@ -20,9 +20,6 @@ module load samtools/1.10
 echo "Make directory for log files"
 mkdir -p results/logs/
 
-echo "Build the reference genome $(date)"
-bash scripts/AipBuild.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-AipBuild.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-AipBuild.err
-
 echo "Trim all reads in data/rawreads/ $(date)"
 bash scripts/trimAll.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-trimAll.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-trimAll.err
 
@@ -32,8 +29,8 @@ bash scripts/alignAll.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-alignAll.l
 echo "Sort the resulting SAM files $(date)"
 bash scripts/sortAll.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-sortAll.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-sortAll.err
 
-echo "Index the resulting BAM files $(date)"
-bash scripts/indexAll.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-indexAll.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-indexAll.err
+echo "counting the number of reads aligned to each gene $(date)"
+bash scripts/featureCounts.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-featureCounts.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-featureCounts.err
 
 echo "Alignment complete $(date)"
 
