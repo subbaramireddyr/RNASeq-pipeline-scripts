@@ -5,47 +5,25 @@ This pipeline used to process and analyze RNA-seq data, including quality contro
 ## Overview of Scripts
 
 ### 1. fastQC.sh
-Purpose: Perform quality control checks on raw FASTQ files.
-Command: `fastqc data/rawreads/*.fastq -o fastqc/`
 
-Input: Raw FASTQ files located in `data/rawreads/`.
-
-Output: HTML and summary QC reports for each FASTQ file in the `fastqc/` directory.
-
-Log: Results are written to `results/logs/fastqc.log` and errors to `results/logs/fastqc.err`.
+To conduct quality control checks on raw FASTQ files, the following command is executed: `fastqc data/rawreads/*.fastq -o fastqc/`. This command processes all FASTQ files located within the `data/rawreads/` directory, generating detailed HTML reports and summary QC metrics for each file. The output is directed to the `fastqc/` directory. The log of this operation, including results and status updates, is captured in `results/logs/fastqc.log`, while any errors encountered during execution are logged in `results/logs/fastqc.err`.
 
 ### 2. trimAll.sh
-Purpose: Trim low-quality bases and adapter sequences from paired-end FASTQ files using Trimmomatic.
-Command: The script loops through all paired-end FASTQ files, trimming them using Trimmomatic.
-Input: Raw FASTQ files (`.R1.fastq`, `.R2.fastq`) in `data/rawreads/`.
-Output: Trimmed FASTQ files (paired and unpaired) in `data/trimmed/paired/` and `data/trimmed/unpaired/`.
-Log: Results are written to `results/logs/trimAll.log` and errors to `results/logs/trimAll.err`.
+
+To trim low-quality bases and adapter sequences from paired-end FASTQ files, This script is executed that loops through all raw FASTQ files (`.R1.fastq`, `.R2.fastq`) in the `data/rawreads/` directory and processes them using Trimmomatic. Output consists of trimmed paired-end FASTQ files saved in `data/trimmed/paired/` and unpaired reads in `data/trimmed/unpaired/`. Logs detailing the trimming process are recorded in `results/logs/trimAll.log`, while any errors encountered are captured in `results/logs/trimAll.err`.
 
 ### 3. alignAll.sh
-Purpose: Align the trimmed paired-end FASTQ files to a reference genome using HISAT2.
-Command: The script aligns each pair of reads and outputs a SAM file for each sample.
-Input: Trimmed paired-end FASTQ files from `data/trimmed/paired/`.
-Output: SAM files in `results/sam/`.
-Log: Results are written to `results/logs/alignAll.log` and errors to `results/logs/alignAll.err`.
+
+To align the trimmed paired-end FASTQ files to a reference genome, a script is executed using HISAT2. The script processes each pair of trimmed reads from the `data/trimmed/paired/` directory, aligning them to the reference genome and producing a SAM file for each sample. The resulting SAM files are stored in the `results/sam/` directory. Logs detailing the alignment process are recorded in `results/logs/alignAll.log`, while any errors encountered during the operation are logged in `results/logs/alignAll.err`.
 
 ### 4. sortAll.sh
-Purpose: Sort the aligned SAM files by genomic position using samtools.
-Command: The script sorts each SAM file and outputs a sorted BAM file.
-Input: SAM files from `results/sam/`.
-Output: Sorted BAM files in `results/bam/`.
-Log: Results are written to `results/logs/sortAll.log` and errors to `results/logs/sortAll.err`.
+
+To sort the aligned SAM files by genomic position, a script utilizing Samtools is executed. This script processes each SAM file from the `results/sam/` directory, sorting the alignments and producing corresponding sorted BAM files. The sorted BAM files are saved in the `results/bam/` directory. Logs of sorting process are captured in `results/logs/sortAll.log`, while any errors that occur during execution are recorded in `results/logs/sortAll.err`.
 
 ### 5. featureCounts.sh
-Purpose: Count the number of reads aligned to each gene using `featureCounts` from the sorted BAM files.
-Command: The script counts the reads mapped to gene features using the annotation file (GTF) and sorted BAM files.
-Input: Sorted BAM files from `results/bam/` and an annotation file.
-Output: Gene counts in the specified output path.
-Log: Results are written to `results/logs/featureCounts.log` and errors to `results/logs/featureCounts.err`.
+
+To count the number of reads aligned to each gene, the `featureCounts` tool is employed on the sorted BAM files. A script is executed that utilizes the annotation file (GTF) along with the sorted BAM files from the `results/bam/` directory to count the reads mapped to gene features. The resulting gene counts are saved in the specified output path. Logs detailing the counting process are recorded in `results/logs/featureCounts.log`, while any errors encountered during execution are captured in `results/logs/featureCounts.err`.
 
 ## Workflow Summary
 
-1. Quality Control: `fastQC.sh` generates reports on the quality of raw sequencing data.
-2. Trimming: `trimAll.sh` trims the reads to remove low-quality bases and adapter contamination.
-3. Alignment: `alignAll.sh` aligns the trimmed reads to the reference genome, generating SAM files.
-4. Sorting: `sortAll.sh` sorts the aligned reads by genomic position, producing BAM files.
-5. Counting: `featureCounts.sh` counts the number of reads mapped, generating a gene-level count matrix.
+Analysis pipeline begins with quality control, where the script `fastQC.sh` generates reports assessing the quality of the raw sequencing data. Following this, the `trimAll.sh` script is executed to trim the reads, effectively removing low-quality bases and adapter contamination. Next, the `alignAll.sh` script aligns the trimmed reads to the reference genome, producing SAM files. The alignment results are then processed by the `sortAll.sh` script, which sorts the aligned reads by genomic position to generate BAM files. Finally, the `featureCounts.sh` script counts the number of reads mapped to each gene, resulting in a gene-level count matrix for downstream analysis.
