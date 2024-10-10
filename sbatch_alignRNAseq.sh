@@ -22,7 +22,7 @@ mkdir -p results/logs/
 echo "Trim all reads in data/rawreads/ $(date)"
 bash scripts/trimAll.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-trimAll.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-trimAll.err
 
-echo "Align the reads to the reference with GSNAP $(date)"
+echo "Align the reads to the reference with HISAT2 $(date)"
 bash scripts/alignAll.sh 1>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-alignAll.log 2>results/logs/$SLURM_JOB_NAME-$SLURM_JOB_ID-alignAll.err
 
 echo "Sort the resulting SAM files $(date)"
